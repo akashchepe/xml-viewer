@@ -1,6 +1,6 @@
 {
   "name": "xml-viewer-workspace",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -20,7 +20,7 @@
       }
     ]
   },
-  "private": true,
+  "private": false,
   "packageManager": "npm@11.10.0",
   "dependencies": {
     "@angular/common": "^21.1.0",
