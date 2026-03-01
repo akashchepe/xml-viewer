@@ -29,8 +29,6 @@ Ideal for:
 
 ![XML Viewer Demo Screenshot](image.png)
 
-*(Replace with your real screenshot or GIF – highly recommended!)*
-
 ## Installation
 
 ```bash
