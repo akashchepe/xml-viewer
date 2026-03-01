@@ -1,19 +1,23 @@
 .xml-viewer {
-      font-family: 'Consolas', 'Courier New', monospace;
       background: #1e1e1e;
       color: #d4d4d4;
       padding: 1rem;
       border-radius: 6px;
+      font-family: 'Consolas', monospace;
       overflow: auto;
-      max-height: 70vh;
-      line-height: 1.45;
-      font-size: 14px;
-      white-space: pre;
+      max-height: 80vh;
     }
-    .tag       { color: #569cd6; } /* blue - element names */
-    .attr      { color: #9cdcfe; } /* light blue - attribute names */
-    .value     { color: #ce9178; } /* orange - attribute values */
-    .comment   { color: #6a9955; font-style: italic; }
-    .pi        { color: #c586c0; } /* purple - <?xml ... ?> */
-    .cdata     { color: #808080; }
-    .doctype   { color: #808080; }
+    .controls {
+      margin-bottom: 1rem;
+    }
+    button {
+      background: #2d2d2d;
+      color: #ccc;
+      border: 1px solid #444;
+      padding: 0.4rem 0.8rem;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover { background: #3a3a3a; }
+    .empty { font-style: italic; color: #777; }

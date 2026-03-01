@@ -1,0 +1,37 @@
+<div class="xml-node">
+      <ng-container [ngSwitch]="node.type">
+
+        <!-- Element -->
+        <ng-container *ngSwitchCase="'element'">
+          <div class="tag-row" (click)="toggle()" style="cursor: pointer;">
+            <span class="expander" *ngIf="hasChildren">{{ node.expanded ? '▼' : '▶' }}</span>
+            <span class="tag">&lt;<span class="tag-name">{{ node.tagName }}</span></span>
+
+            <ng-container *ngFor="let attr of attrEntries">
+              <span class="attr-name"> {{ attr[0] }}</span>=<span class="attr-value">"{{ attr[1] }}"</span>
+            </ng-container>
+
+            <span *ngIf="!hasChildren">/&gt;</span>
+            <span *ngIf="hasChildren">&gt;</span>
+          </div>
+
+          <div class="children" *ngIf="node.expanded && hasChildren">
+            <app-xml-node *ngFor="let child of node.children" [node]="child"></app-xml-node>
+          </div>
+
+          <div class="tag-row closing" *ngIf="hasChildren">
+            &lt;/<span class="tag-name">{{ node.tagName }}</span>&gt;
+          </div>
+        </ng-container>
+
+        <!-- Text -->
+        <span *ngSwitchCase="'text'" class="text-content">{{ node.content }}</span>
+
+        <!-- Comment -->
+        <div *ngSwitchCase="'comment'" class="comment">&lt;!-- {{ node.content }} --&gt;</div>
+
+        <!-- CDATA -->
+        <div *ngSwitchCase="'cdata'" class="cdata">&lt;![CDATA[{{ node.content }}]]&gt;</div>
+
+      </ng-container>
+    </div>

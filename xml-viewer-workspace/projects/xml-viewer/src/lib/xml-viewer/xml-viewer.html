@@ -1,1 +1,13 @@
-<div class="xml-viewer" [innerHTML]="highlightedXml"></div>
+<div class="xml-viewer">
+      <div class="controls" *ngIf="root()">
+        <button (click)="expandAll()">Expand All</button>
+        <button (click)="collapseAll()">Collapse All</button>
+      </div>
+
+      <div class="content">
+        <app-xml-node *ngIf="root(); let r" [node]="r"></app-xml-node>
+        <div *ngIf="!root()" class="empty">
+          <span class="comment">&lt;!-- No valid XML or parse error --&gt;</span>
+        </div>
+      </div>
+    </div>
