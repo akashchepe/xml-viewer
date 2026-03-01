@@ -1,59 +1,119 @@
-# XmlViewerWorkspace
+```markdown
+# @akashchepe/xml-viewer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+[![npm version](https://img.shields.io/npm/v/@akashchepe/xml-viewer.svg?style=flat-square&color=crimson)](https://www.npmjs.com/package/@akashchepe/xml-viewer)
+[![npm downloads](https://img.shields.io/npm/dm/@akashchepe/xml-viewer.svg?style=flat-square)](https://www.npmjs.com/package/@akashchepe/xml-viewer)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@akashchepe/xml-viewer?style=flat-square)](https://bundlephobia.com/package/@akashchepe/xml-viewer)
+[![license](https://img.shields.io/npm/l/@akashchepe/xml-viewer?style=flat-square)](https://github.com/akashchepe/xml-viewer/blob/main/LICENSE)
+[![Angular](https://img.shields.io/badge/Angular-17%2B-brightgreen?style=flat-square&logo=angular)](https://angular.dev)
 
-## Development server
+**Standalone Angular component** to beautifully display and explore XML content with syntax highlighting, collapsible tree structure, and expand/collapse controls.
 
-To start a local development server, run:
+Ideal for:
+- API response debugging (SOAP, RSS, config files)
+- Developer tools & admin panels
+- XML-based data visualization
 
-```bash
-ng serve
-```
+## ✨ Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Collapsible tree view** – expand/collapse individual nodes or everything
+- **Expand All / Collapse All** buttons
+- **Syntax highlighting** – colorful tags, attributes, values, comments, CDATA
+- **Pretty printing** – automatic indentation & formatting
+- **Zero dependencies** – lightweight & tree-shakable
+- **Standalone** – works perfectly with modern Angular (17+)
+- **Dark theme** optimized out of the box
+- Handles processing instructions, comments, CDATA, self-closing tags
 
-## Code scaffolding
+## Demo Screenshot
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+![XML Viewer Demo Screenshot](image.png)
 
-```bash
-ng generate component component-name
-```
+*(Replace with your real screenshot or GIF – highly recommended!)*
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Installation
 
 ```bash
-ng test
+# npm
+npm install @akashchepe/xml-viewer
+
+# yarn
+yarn add @akashchepe/xml-viewer
+
+# pnpm (recommended in 2025+)
+pnpm add @akashchepe/xml-viewer
 ```
 
-## Running end-to-end tests
+## Quick Start (Standalone – Recommended)
 
-For end-to-end (e2e) testing, run:
+```ts
+import { Component } from '@angular/core';
+import { XmlViewerComponent } from '@akashchepe/xml-viewer';
+
+@Component({
+  selector: 'app-xml-demo',
+  standalone: true,
+  imports: [XmlViewerComponent],
+  template: `
+    <xml-viewer [xml]="xmlContent"></xml-viewer>
+  `,
+})
+export class XmlDemoComponent {
+  xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+  <book category="fiction">
+    <title lang="en">Harry Potter</title>
+    <author>J. K. Rowling</author>
+    <year>1997</year>
+    <price>29.99</price>
+  </book>
+  <!-- Sample comment -->
+  <book category="children">
+    <title>The Very Hungry Caterpillar</title>
+  </book>
+</bookstore>`;
+}
+```
+
+## Safe / Optional Empty State
+
+```html
+<!-- Shows nice placeholder when xml is undefined/null/empty -->
+<xml-viewer [xml]="xmlData ?? ''"></xml-viewer>
+```
+
+## Component API
+
+| Input   | Type   | Required | Default | Description                              |
+|---------|--------|----------|---------|------------------------------------------|
+| `xml`   | `string` | no     | —       | The raw XML string to render             |
+
+No outputs or other inputs at the moment.
+
+## Development & Contributing
 
 ```bash
-ng e2e
+# Clone repo
+git clone https://github.com/akashchepe/xml-viewer.git
+cd xml-viewer
+
+# Install
+pnpm install
+
+# Build library
+pnpm build:lib
+
+# Run demo app (if you have one in workspace)
+pnpm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Pull requests welcome! Please follow conventional commits.
 
-## Additional Resources
+## License
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT © [Akash Chepe](https://github.com/akashchepe)
+
+---
+
+I made with ❤️
+```
