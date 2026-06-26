@@ -17,6 +17,16 @@ export class XmlNodeComponent {
     return !!this.node.children?.length;
   }
 
+  get hasOnlyTextContent(): boolean {
+    // Check if node has only one child and it's a text node
+    return this.node.children?.length === 1 && this.node.children[0].type === 'text';
+  }
+
+  get textContent(): string {
+    // Get the text content from single text child
+    return this.node.children?.[0].content || '';
+  }
+
   get attrEntries() {
     return Object.entries(this.node.attributes || {});
   }
