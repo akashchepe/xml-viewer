@@ -10,7 +10,31 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
   selector: 'xml-viewer',
   standalone: true,
   imports: [CommonModule, XmlNodeComponent],
-  templateUrl: './xml-viewer.html',
+  template: `
+    <div class="xml-viewer" #xmlViewerContainer (scroll)="onContainerScroll($event)">
+      <div class="controls" *ngIf="root()">
+        <button (click)="expandAll()">Expand All</button>
+        <button (click)="collapseAll()">Collapse All</button>
+      </div>
+
+      <div class="content">
+        <app-xml-node *ngIf="root(); let r" [node]="r"></app-xml-node>
+        <div *ngIf="!root()" class="empty">
+          <span class="comment">&lt;!-- No valid XML or parse error --&gt;</span>
+        </div>
+      </div>
+
+      <!-- Scroll to Top Button -->
+      <button 
+        *ngIf="showScrollToTop()" 
+        class="scroll-to-top-btn" 
+        (click)="scrollToTop()"
+        title="Scroll to top"
+      >
+        ⬆
+      </button>
+    </div>
+  `,
   styleUrls: ['./xml-viewer.css'] 
 })
 export class XmlViewerComponent {
