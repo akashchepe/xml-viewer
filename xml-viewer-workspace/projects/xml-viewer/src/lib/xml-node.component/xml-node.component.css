@@ -7,11 +7,19 @@
 }
 
 .tag-row { 
-  white-space: pre; 
+  white-space: pre-wrap; 
+  word-wrap: break-word;
   margin: 0;
   padding: 0;
 }
 
+.tag-row.single-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tag { color: #d4d4d4; }
 .tag-name     { color: #569cd6; font-weight: bold; }
 .attr-name    { color: #9cdcfe; }
 .attr-value   { color: #ce9178; }
