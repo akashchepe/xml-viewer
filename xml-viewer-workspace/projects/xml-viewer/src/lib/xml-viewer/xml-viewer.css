@@ -1,15 +1,27 @@
 .xml-viewer {
   background: #1e1e1e;
   color: #d4d4d4;
-  padding: 1rem;
+  padding: 0;
   border-radius: 6px;
   font-family: 'Consolas', monospace;
   overflow: auto;
   max-height: 80vh;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  position: relative;
 }
 
 .controls {
-  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background: #1e1e1e;
+  padding: 1rem;
+  margin: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #444;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 button {
@@ -20,6 +32,9 @@ button {
   margin-right: 0.5rem;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.2s ease;
+  font-family: 'Consolas', monospace;
+  font-size: 14px;
 }
 
 button:hover { 
@@ -28,10 +43,44 @@ button:hover {
 
 .empty { 
   font-style: italic; 
-  color: #777; 
+  color: #777;
+  padding: 1rem;
 }
 
 .content {
   margin: 0;
+  padding: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #569cd6;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
   padding: 0;
+}
+
+.scroll-to-top-btn:hover {
+  background: #7db3e8;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(0);
 }
