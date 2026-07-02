@@ -2,7 +2,7 @@
 import { Component, Input, signal, ViewChild, ElementRef, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { parseXml, countTransactions, type XmlNode, type TransactionStats } from '../../app/utils/xml-parser' // adjust path
+import { parseXml, countTransactions, type XmlNode, type TransactionStats, isDefaultExpanded } from '../../app/utils/xml-parser' // adjust path
 import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
 
 
@@ -127,8 +127,17 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
     this.traverseAndSet(this.root(), true);
   }
 
+  // Reset expanded state to parser defaults rather than collapsing everything
   collapseAll() {
-    this.traverseAndSet(this.root(), false);
+    this.resetToDefaults(this.root());
+  }
+
+  private resetToDefaults(node: XmlNode | null) {
+    if (!node) return;
+    if (node.type === 'element') {
+      node.expanded = isDefaultExpanded(node.tagName);
+      node.children?.forEach(child => this.resetToDefaults(child));
+    }
   }
 
   scrollToTop() {
