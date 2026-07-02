@@ -142,3 +142,9 @@ export function countTransactions(xmlStr: string): TransactionStats {
 
   return stats;
 }
+
+// Helper to expose default expansion rule so UI can reset to parser defaults
+export function isDefaultExpanded(tagName?: string): boolean {
+  if (!tagName) return false;
+  return DEFAULT_EXPAND_NODES.includes(tagName);
+}
