@@ -1,13 +1,13 @@
 <div class="xml-viewer" #xmlViewerContainer (scroll)="onContainerScroll($event)">
   <div class="controls" *ngIf="root()">
     <button (click)="expandAll()">Expand All</button>
-    <button (click)="collapseAll()">Collapse All</button>
+    <button (click)="collapseAll()">Collapse To Default</button>
   </div>
 
   <div class="content">
     <app-xml-node *ngIf="root(); let r" [node]="r"></app-xml-node>
     <div *ngIf="!root()" class="empty">
-      <span class="comment">&lt;!-- No valid XML or parse error --&gt;</span>
+      <span class="comment" style="color: white;">&lt; Invalid XML or parsing error &gt;</span>
     </div>
   </div>
 
