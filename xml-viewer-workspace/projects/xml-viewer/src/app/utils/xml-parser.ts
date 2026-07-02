@@ -115,13 +115,13 @@ export function countTransactions(xmlStr: string): TransactionStats {
   Array.from(txElements).forEach((txEl) => {
     let txType: string | null = null;
 
-    // Look for TxTp (Transaction Type) or similar indicator elements
-    const txTypeEl = txEl.querySelector('TxTp');
+    // Look for RptdTxSts (Transaction Type) or similar indicator elements
+    const txTypeEl = txEl.querySelector('RptdTxSts');
     if (txTypeEl) {
       txType = txTypeEl.textContent?.trim() || null;
     }
 
-    // If TxTp not found, look for other common type indicators in children
+    // If RptdTxSts not found, look for other common type indicators in children
     if (!txType) {
       const children = Array.from(txEl.children);
       for (const child of children) {
