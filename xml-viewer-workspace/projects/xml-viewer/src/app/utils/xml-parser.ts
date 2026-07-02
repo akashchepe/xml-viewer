@@ -9,6 +9,23 @@ export interface XmlNode {
   depth?: number;       // track depth for expansion logic
 }
 
+export interface TransactionStats {
+  total: number;
+  NEWT: number;
+  CANC: number;
+  AMND: number;
+  NOTX: number;
+}
+
+// Default node names to auto-expand
+const DEFAULT_EXPAND_NODES = [
+  'EBASSMessage',
+  'AppHdr',
+  'Document',
+  'MnyMktUscrdMktSttstclRpt',
+  'UscrdMktRpt'
+];
+
 export function parseXml(xmlStr: string): XmlNode | null {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xmlStr, 'application/xml');
@@ -37,8 +54,8 @@ export function parseXml(xmlStr: string): XmlNode | null {
 
     const el = node as Element;
     
-    // Expand first two levels (depth 0 and 1), collapse the rest
-    const shouldExpand = depth < 2;
+    // Check if node should be expanded based on tag name
+    const shouldExpand = DEFAULT_EXPAND_NODES.includes(el.tagName);
     
     const n: XmlNode = {
       type: 'element',
@@ -65,4 +82,63 @@ export function parseXml(xmlStr: string): XmlNode | null {
 
   const root = convert(doc.documentElement);
   return root;
+}
+
+/**
+ * Count transactions (Tx elements) and their types
+ * Looks for <Tx> elements and extracts type from children like <TxTp> or first transaction type child
+ */
+export function countTransactions(xmlStr: string): TransactionStats {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlStr, 'application/xml');
+
+  const stats: TransactionStats = {
+    total: 0,
+    NEWT: 0,
+    CANC: 0,
+    AMND: 0,
+    NOTX: 0
+  };
+
+  // Get all Tx elements
+  const txElements = doc.getElementsByTagName('Tx');
+  
+  if (txElements.length === 0) {
+    // Check if this is a NOTX file (no transactions)
+    stats.NOTX = 1;
+    return stats;
+  }
+
+  stats.total = txElements.length;
+
+  // For each Tx element, find the transaction type indicator
+  Array.from(txElements).forEach((txEl) => {
+    let txType: string | null = null;
+
+    // Look for TxTp (Transaction Type) or similar indicator elements
+    const txTypeEl = txEl.querySelector('TxTp');
+    if (txTypeEl) {
+      txType = txTypeEl.textContent?.trim() || null;
+    }
+
+    // If TxTp not found, look for other common type indicators in children
+    if (!txType) {
+      const children = Array.from(txEl.children);
+      for (const child of children) {
+        const text = child.textContent?.trim();
+        if (text && ['NEWT', 'CANC', 'AMND', 'NOTX'].includes(text)) {
+          txType = text;
+          break;
+        }
+      }
+    }
+
+    // Count the transaction type
+    if (txType === 'NEWT') stats.NEWT++;
+    else if (txType === 'CANC') stats.CANC++;
+    else if (txType === 'AMND') stats.AMND++;
+    else if (txType === 'NOTX') stats.NOTX++;
+  });
+
+  return stats;
 }
