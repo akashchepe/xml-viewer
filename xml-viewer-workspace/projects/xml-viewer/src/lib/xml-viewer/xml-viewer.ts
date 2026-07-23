@@ -35,7 +35,7 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
         </div>
 
         <div class="content" [style.max-height]="getContentMaxHeight()">
-          <app-xml-node *ngIf="root(); let r" [node]="r"></app-xml-node>
+          <app-xml-node *ngIf="root(); let r" [node]="r" [lineCounter]="lineCounter"></app-xml-node>
           <div *ngIf="!root()" class="empty">
             <span class="comment">&lt;!-- No valid XML or parse error --&gt;</span>
           </div>
@@ -71,12 +71,18 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
     // Count transactions from the XML
     const stats = countTransactions(value);
     this.transactionStats.set(stats);
+
+    // Reset line counter when new XML is loaded
+    this.lineCounter.value = 1;
   }
 
   root = signal<XmlNode | null>(null);
   showScrollToTop = signal<boolean>(false);
   isFullscreen = signal<boolean>(false);
   transactionStats = signal<TransactionStats | null>(null);
+  
+  // Shared line counter for tracking line numbers during recursive rendering
+  lineCounter = { value: 1 };
 
   ngOnInit() {
     // Add keyboard listener for Escape key
