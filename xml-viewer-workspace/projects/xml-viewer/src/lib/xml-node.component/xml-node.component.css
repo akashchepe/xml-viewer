@@ -1,8 +1,8 @@
 .xml-node { 
   margin-left: 0; 
-  font-family: Poppins-Regular !important; 
+  font-family: 'Consolas', 'Monaco', monospace !important; 
   font-size: 14px; 
-  line-height: 1.2; 
+  line-height: 1.5; 
   color: #d4d4d4; 
 }
 
@@ -23,15 +23,22 @@
 
 .line-number {
   display: inline-block;
-  width: 3rem;
+  min-width: 4rem;
+  padding-right: 1.5rem;
   text-align: right;
-  margin-right: 1rem;
   color: #858585;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   flex-shrink: 0;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 14px;
+  font-weight: normal;
+  border-right: 1px solid #3e3e3e;
+  padding-left: 0.5rem;
+  background: #252526;
+  margin-right: 0.5rem;
 }
 
 .line-number::before {
@@ -47,4 +54,4 @@
 .cdata        { color: #808080; margin: 0; padding: 0; }
 .closing      { color: #569cd6; margin: 0; padding: 0; }
 .expander     { color: #888; margin-right: 6px; width: 14px; display: inline-block; flex-shrink: 0; }
-.children     { border-left: 1px dotted #444; padding-left: 0.8rem; margin: 0; margin-left: 3rem; }
+.children     { border-left: 1px dotted #444; padding-left: 0.8rem; margin: 0; margin-left: 0; }
