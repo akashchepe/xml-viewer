@@ -25,6 +25,7 @@
   display: inline-block;
   min-width: 4rem;
   padding-right: 1.5rem;
+  padding-left: 0.5rem;
   text-align: right;
   color: #858585;
   user-select: none;
@@ -36,9 +37,9 @@
   font-size: 14px;
   font-weight: normal;
   border-right: 1px solid #3e3e3e;
-  padding-left: 0.5rem;
   background: #252526;
   margin-right: 0.5rem;
+  white-space: nowrap;
 }
 
 .line-number::before {
