@@ -14,9 +14,9 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
     <div [class.fullscreen]="isFullscreen()" class="xml-viewer-wrapper">
       <div class="xml-viewer" #xmlViewerContainer (scroll)="onContainerScroll($event)">
         <div class="controls" *ngIf="root()">
-          <button (click)="expandAll()" title="Expand All">Expand All</button>
-          <button (click)="collapseAll()" title="Collapse All">Collapse All</button>
-          <button (click)="toggleFullscreen()" [title]="isFullscreen() ? 'Exit Fullscreen' : 'Fullscreen'" class="fullscreen-btn">
+          <button (click)="expandAll()" >Expand All</button>
+          <button (click)="collapseAll()" >Collapse To Default</button>
+          <button (click)="toggleFullscreen()" [matTooltip]="isFullscreen() ? 'Exit Fullscreen' : 'Fullscreen'" placement="top">
             {{ isFullscreen() ? '✕' : '⛶' }}
           </button>
           
@@ -26,7 +26,7 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
               # Transactions: 0 (NOTX)
             </span>
             <span *ngIf="transactionStats()!.total > 0" class="summary-text">
-              # Total Transactions: {{ transactionStats()!.total }}
+              # Transactions: {{ transactionStats()!.total }}
               <span *ngIf="transactionStats()!.NEWT > 0"> | NEWT: {{ transactionStats()!.NEWT }}</span>
               <span *ngIf="transactionStats()!.CANC > 0"> | CANC: {{ transactionStats()!.CANC }}</span>
               <span *ngIf="transactionStats()!.AMND > 0"> | AMND: {{ transactionStats()!.AMND }}</span>
@@ -37,7 +37,7 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
         <div class="content" [style.max-height]="getContentMaxHeight()">
           <app-xml-node *ngIf="root(); let r" [node]="r" [lineCounter]="lineCounter"></app-xml-node>
           <div *ngIf="!root()" class="empty">
-            <span class="comment">&lt;!-- No valid XML or parse error --&gt;</span>
+            <span class="invalidXml">&lt; Invalid XML or parsing error &gt;</span>
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
     const stats = countTransactions(value);
     this.transactionStats.set(stats);
 
-    // Reset line counter when new XML is loaded
+    // Reset line counter whern new file is loaded
     this.lineCounter.value = 1;
   }
 
@@ -80,9 +80,8 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
   showScrollToTop = signal<boolean>(false);
   isFullscreen = signal<boolean>(false);
   transactionStats = signal<TransactionStats | null>(null);
-  
-  // Shared line counter for tracking line numbers during recursive rendering
-  lineCounter = { value: 1 };
+
+  lineCounter = { value: 1};
 
   ngOnInit() {
     // Add keyboard listener for Escape key
