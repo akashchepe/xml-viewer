@@ -12,7 +12,7 @@ import type { XmlNode } from '../../app/utils/xml-parser';  // adjust path
 })
 export class XmlNodeComponent {
   @Input() node!: XmlNode;
-  @Input() lineCounter!: { value: number }; // Shared counter object for tracking line numbers
+  @Input() lineCounter!: {value: number};
 
   get hasChildren(): boolean {
     return !!this.node.children?.length;
