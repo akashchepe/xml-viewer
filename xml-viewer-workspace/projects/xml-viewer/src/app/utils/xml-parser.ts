@@ -94,6 +94,14 @@ export function parseXml(xmlStr: string): XmlNode | null {
 }
 
 /**
+ * Count total lines in XML string (number of newline characters + 1)
+ */
+export function countLines(xmlStr: string): number {
+  if (!xmlStr) return 0;
+  return xmlStr.split('\n').length;
+}
+
+/**
  * Count transactions (Tx elements) and their status types
  * Looks for <txresp:Sts> elements and counts ACPT, RJCT, ACTC, PART statuses
  */
