@@ -2,7 +2,7 @@
 import { Component, Input, signal, ViewChild, ElementRef, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { parseXml, countTransactions, type XmlNode, type TransactionStats, isDefaultExpanded } from '../../app/utils/xml-parser' // adjust path
+import { parseXml, countTransactions, type XmlNode, type TransactionStats, isDefaultExpanded, countLines } from '../../app/utils/xml-parser' // adjust path
 import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
 
 
@@ -35,10 +35,16 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
           </div>
         </div>
 
-        <div class="content" [style.max-height]="getContentMaxHeight()">
-          <app-xml-node *ngIf="root(); let r" [node]="r" [lineCounter]="lineCounter"></app-xml-node>
-          <div *ngIf="!root()" class="empty">
-            <span class="invalidXml">&lt; Invalid XML or parsing error &gt;</span>
+        <div class="content-with-line-numbers">
+          <div class="line-numbers-column" [style.max-height]="getContentMaxHeight()">
+            <div *ngFor="let lineNum of lineNumbers" class="line-number-item">{{ lineNum }}</div>
+          </div>
+          
+          <div class="content" [style.max-height]="getContentMaxHeight()">
+            <app-xml-node *ngIf="root()" [node]="root()"></app-xml-node>
+            <div *ngIf="!root()" class="empty">
+              <span class="invalidXml">&lt; Invalid XML or parsing error &gt;</span>
+            </div>
           </div>
         </div>
 
@@ -63,6 +69,7 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
     if (!value?.trim()) {
       this.root.set(null);
       this.transactionStats.set(null);
+      this.lineNumbers.set([]);
       return;
     }
 
@@ -73,16 +80,16 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
     const stats = countTransactions(value);
     this.transactionStats.set(stats);
 
-    // Reset line counter when new file is loaded
-    this.lineCounter.value = 1;
+    // Count total lines in XML and generate line numbers
+    const totalLines = countLines(value);
+    this.lineNumbers.set(Array.from({ length: totalLines }, (_, i) => i + 1));
   }
 
   root = signal<XmlNode | null>(null);
   showScrollToTop = signal<boolean>(false);
   isFullscreen = signal<boolean>(false);
   transactionStats = signal<TransactionStats | null>(null);
-
-  lineCounter = { value: 1};
+  lineNumbers = signal<number[]>([]);
 
   ngOnInit() {
     // Add keyboard listener for Escape key
