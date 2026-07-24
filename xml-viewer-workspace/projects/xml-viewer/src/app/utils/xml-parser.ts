@@ -11,10 +11,10 @@ export interface XmlNode {
 
 export interface TransactionStats {
   total: number;
-  NEWT: number;
-  CANC: number;
-  AMND: number;
-  NOTX: number;
+  ACPT: number;
+  RJCT: number;
+  ACTC: number;
+  PART: number;
 }
 
 // Default node names to auto-expand
@@ -24,6 +24,14 @@ const DEFAULT_EXPAND_NODES = [
   'Document',
   'MnyMktUscrdMktSttstclRpt',
   'UscrdMktRpt'
+];
+
+// Node names to collapse by default
+const DEFAULT_COLLAPSE_NODES = [
+  'stsbah:Fr',
+  'stsbah:To',
+  'txresp:RptgPrd',
+  'txresp:VldtnRule'
 ];
 
 export function parseXml(xmlStr: string): XmlNode | null {
@@ -55,7 +63,8 @@ export function parseXml(xmlStr: string): XmlNode | null {
     const el = node as Element;
     
     // Check if node should be expanded based on tag name
-    const shouldExpand = DEFAULT_EXPAND_NODES.includes(el.tagName);
+    const shouldExpand = DEFAULT_EXPAND_NODES.includes(el.tagName) && 
+                        !DEFAULT_COLLAPSE_NODES.includes(el.tagName);
     
     const n: XmlNode = {
       type: 'element',
@@ -85,8 +94,8 @@ export function parseXml(xmlStr: string): XmlNode | null {
 }
 
 /**
- * Count transactions (Tx elements) and their types
- * Looks for <Tx> elements and extracts type from children like <TxTp> or first transaction type child
+ * Count transactions (Tx elements) and their status types
+ * Looks for <txresp:Sts> elements and counts ACPT, RJCT, ACTC, PART statuses
  */
 export function countTransactions(xmlStr: string): TransactionStats {
   const parser = new DOMParser();
@@ -94,50 +103,39 @@ export function countTransactions(xmlStr: string): TransactionStats {
 
   const stats: TransactionStats = {
     total: 0,
-    NEWT: 0,
-    CANC: 0,
-    AMND: 0,
-    NOTX: 0
+    ACPT: 0,
+    RJCT: 0,
+    ACTC: 0,
+    PART: 0
   };
 
-  // Get all Tx elements
-  const txElements = doc.getElementsByTagName('Tx');
+  // Get all txresp:Sts elements
+  const stsElements = doc.getElementsByTagName('txresp:Sts');
   
-  if (txElements.length === 0) {
-    // Check if this is a NOTX file (no transactions)
-    stats.NOTX = 1;
+  if (stsElements.length === 0) {
     return stats;
   }
 
-  stats.total = txElements.length;
+  stats.total = stsElements.length;
 
-  // For each Tx element, find the transaction type indicator
-  Array.from(txElements).forEach((txEl) => {
-    let txType: string | null = null;
+  // Count each status type
+  Array.from(stsElements).forEach((stsEl) => {
+    const status = stsEl.textContent?.trim() || '';
 
-    // Look for RptdTxSts (Transaction Type) or similar indicator elements
-    const txTypeEl = txEl.querySelector('RptdTxSts');
-    if (txTypeEl) {
-      txType = txTypeEl.textContent?.trim() || null;
+    switch (status) {
+      case 'ACPT':
+        stats.ACPT++;
+        break;
+      case 'RJCT':
+        stats.RJCT++;
+        break;
+      case 'ACTC':
+        stats.ACTC++;
+        break;
+      case 'PART':
+        stats.PART++;
+        break;
     }
-
-    // If RptdTxSts not found, look for other common type indicators in children
-    if (!txType) {
-      const children = Array.from(txEl.children);
-      for (const child of children) {
-        const text = child.textContent?.trim();
-        if (text && ['NEWT', 'CANC', 'AMND', 'NOTX'].includes(text)) {
-          txType = text;
-          break;
-        }
-      }
-    }
-
-    // Count the transaction type
-    if (txType === 'NEWT') stats.NEWT++;
-    else if (txType === 'CANC') stats.CANC++;
-    else if (txType === 'AMND') stats.AMND++;
-    else if (txType === 'NOTX') stats.NOTX++;
   });
 
   return stats;
@@ -146,5 +144,6 @@ export function countTransactions(xmlStr: string): TransactionStats {
 // Helper to expose default expansion rule so UI can reset to parser defaults
 export function isDefaultExpanded(tagName?: string): boolean {
   if (!tagName) return false;
-  return DEFAULT_EXPAND_NODES.includes(tagName);
+  return DEFAULT_EXPAND_NODES.includes(tagName) && 
+         !DEFAULT_COLLAPSE_NODES.includes(tagName);
 }
