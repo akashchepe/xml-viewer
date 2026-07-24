@@ -1,6 +1,6 @@
 .xml-node { 
-  margin-left: 0;
-  font-family: 'Consolas', monospace; 
+  margin-left: 0; 
+  font-family: Poppins-Regular !important; 
   font-size: 14px; 
   line-height: 1.2; 
   color: #d4d4d4; 
@@ -39,7 +39,7 @@
 }
 
 .tag { color: #d4d4d4; }
-.tag-name     { color: #569cd6; font-weight: bold; }
+.tag-name     { color: #569cd6; }
 .attr-name    { color: #9cdcfe; }
 .attr-value   { color: #ce9178; }
 .text-content { color: #d4d4d4; margin: 0; padding: 0; }
