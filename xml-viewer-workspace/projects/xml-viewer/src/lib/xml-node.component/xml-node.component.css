@@ -21,31 +21,6 @@
   text-overflow: ellipsis;
 }
 
-.line-number {
-  display: inline-block;
-  min-width: 4rem;
-  padding-right: 1.5rem;
-  padding-left: 0.5rem;
-  text-align: right;
-  color: #858585;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  flex-shrink: 0;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 14px;
-  font-weight: normal;
-  border-right: 1px solid #3e3e3e;
-  background: #252526;
-  margin-right: 0.5rem;
-  white-space: nowrap;
-}
-
-.line-number::before {
-  content: attr(data-line);
-}
-
 .tag { color: #d4d4d4; }
 .tag-name     { color: #569cd6; }
 .attr-name    { color: #9cdcfe; }
