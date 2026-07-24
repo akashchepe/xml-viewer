@@ -22,14 +22,15 @@ import { XmlNodeComponent } from '../xml-node.component/xml-node.component';
           
           <!-- Transaction Counter Display -->
           <div class="transaction-summary" *ngIf="transactionStats()">
-            <span *ngIf="transactionStats()!.total === 0 && transactionStats()!.NOTX > 0" class="summary-text">
-              # Transactions: 0 (NOTX)
+            <span *ngIf="transactionStats()!.total === 0" class="summary-text">
+              # Transactions: 0
             </span>
             <span *ngIf="transactionStats()!.total > 0" class="summary-text">
               # Transactions: {{ transactionStats()!.total }}
-              <span *ngIf="transactionStats()!.NEWT > 0"> | NEWT: {{ transactionStats()!.NEWT }}</span>
-              <span *ngIf="transactionStats()!.CANC > 0"> | CANC: {{ transactionStats()!.CANC }}</span>
-              <span *ngIf="transactionStats()!.AMND > 0"> | AMND: {{ transactionStats()!.AMND }}</span>
+              <span *ngIf="transactionStats()!.ACPT > 0"> | ACPT: {{ transactionStats()!.ACPT }}</span>
+              <span *ngIf="transactionStats()!.RJCT > 0"> | RJCT: {{ transactionStats()!.RJCT }}</span>
+              <span *ngIf="transactionStats()!.ACTC > 0"> | ACTC: {{ transactionStats()!.ACTC }}</span>
+              <span *ngIf="transactionStats()!.PART > 0"> | PART: {{ transactionStats()!.PART }}</span>
             </span>
           </div>
         </div>
@@ -72,7 +73,7 @@ export class XmlViewerComponent implements OnInit, OnDestroy {
     const stats = countTransactions(value);
     this.transactionStats.set(stats);
 
-    // Reset line counter whern new file is loaded
+    // Reset line counter when new file is loaded
     this.lineCounter.value = 1;
   }
 
