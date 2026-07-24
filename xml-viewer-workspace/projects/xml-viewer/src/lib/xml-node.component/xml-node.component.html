@@ -6,7 +6,6 @@
       <!-- Element with only text content: display on single line -->
       <ng-container *ngIf="hasOnlyTextContent">
         <div class="tag-row single-line" (click)="toggle()" style="cursor: pointer;">
-          <span class="line-number" [attr.data-line]="currentLineNumber"></span>
           <span class="tag">&lt;<span class="tag-name">{{ node.tagName }}</span></span>
           
           <ng-container *ngFor="let attr of attrEntries">
@@ -17,13 +16,11 @@
           <span class="text-content">{{ textContent }}</span>
           <span class="tag">&lt;/<span class="tag-name">{{ node.tagName }}</span>&gt;</span>
         </div>
-        <ng-container>{{ incrementLineCounter() }}</ng-container>
       </ng-container>
 
       <!-- Element with multiple children or complex structure -->
       <ng-container *ngIf="!hasOnlyTextContent">
         <div class="tag-row" (click)="toggle()" style="cursor: pointer;">
-          <span class="line-number" [attr.data-line]="currentLineNumber"></span>
           <span class="expander" *ngIf="hasChildren">{{ node.expanded ? '▼' : '▶' }}</span>
           <span class="tag">&lt;<span class="tag-name">{{ node.tagName }}</span></span>
 
@@ -34,39 +31,30 @@
           <span *ngIf="!hasChildren">/&gt;</span>
           <span *ngIf="hasChildren">&gt;</span>
         </div>
-        <ng-container>{{ incrementLineCounter() }}</ng-container>
 
         <div class="children" *ngIf="node.expanded && hasChildren">
-          <app-xml-node *ngFor="let child of node.children" [node]="child" [lineCounter]="lineCounter"></app-xml-node>
+          <app-xml-node *ngFor="let child of node.children" [node]="child"></app-xml-node>
         </div>
 
         <div class="tag-row closing" *ngIf="hasChildren">
-          <span class="line-number" [attr.data-line]="currentLineNumber"></span>
           &lt;/<span class="tag-name">{{ node.tagName }}</span>&gt;
         </div>
-        <ng-container *ngIf="hasChildren">{{ incrementLineCounter() }}</ng-container>
       </ng-container>
     </ng-container>
 
     <!-- Text -->
     <div *ngSwitchCase="'text'" class="tag-row">
-      <span class="line-number" [attr.data-line]="currentLineNumber"></span>
       <span class="text-content">{{ node.content }}</span>
-      <ng-container>{{ incrementLineCounter() }}</ng-container>
     </div>
 
     <!-- Comment -->
     <div *ngSwitchCase="'comment'" class="tag-row">
-      <span class="line-number" [attr.data-line]="currentLineNumber"></span>
       <div class="comment">&lt;!-- {{ node.content }} --&gt;</div>
-      <ng-container>{{ incrementLineCounter() }}</ng-container>
     </div>
 
     <!-- CDATA -->
     <div *ngSwitchCase="'cdata'" class="tag-row">
-      <span class="line-number" [attr.data-line]="currentLineNumber"></span>
       <div class="cdata">&lt;![CDATA[{{ node.content }}]]&gt;</div>
-      <ng-container>{{ incrementLineCounter() }}</ng-container>
     </div>
 
   </ng-container>
